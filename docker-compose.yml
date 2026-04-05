@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      # Use internal docker network hostname for DB (service name `db`)
+      DATABASE_URL: "mysql://root:example@db:3306/belajar_nodejs_restful_api"
+    depends_on:
+      - db
+    volumes:
+      - ./:/usr/src/app:cached
+      - /usr/src/app/node_modules
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: belajar_nodejs_restful_api
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
